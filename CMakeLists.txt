@@ -12,6 +12,7 @@ add_executable(minesweeper src/main.cpp
         src/board.cpp
         include/rng.h
         include/timer.h
+        src/timer.cpp
 )
 
 

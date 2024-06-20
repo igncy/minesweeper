@@ -1,4 +1,4 @@
-# Install script for directory: /home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-release/_deps/argparse-src
+# Install script for directory: /home/ignacy/Projects/uni/sem4/minesweeper/cmake-build-release/_deps/argparse-src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)

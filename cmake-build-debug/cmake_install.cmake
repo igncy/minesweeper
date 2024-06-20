@@ -1,4 +1,4 @@
-# Install script for directory: /home/ignacy/Projects/uni/sem4/cpp/project
+# Install script for directory: /home/ignacy/Projects/uni/sem4/minesweeper
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -44,7 +44,7 @@ endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for the subdirectory.
-  include("/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/argparse-build/cmake_install.cmake")
+  include("/home/ignacy/Projects/uni/sem4/minesweeper/cmake-build-debug/_deps/argparse-build/cmake_install.cmake")
 endif()
 
 if(CMAKE_INSTALL_COMPONENT)
@@ -55,5 +55,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/ignacy/Projects/uni/sem4/minesweeper/cmake-build-debug/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

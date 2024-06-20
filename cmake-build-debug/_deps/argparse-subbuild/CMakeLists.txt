@@ -28,8 +28,8 @@ set_property(GLOBAL PROPERTY _CMAKE_FindGit_GIT_EXECUTABLE_VERSION
 include(ExternalProject)
 ExternalProject_Add(argparse-populate
                      "UPDATE_DISCONNECTED" "False" "GIT_REPOSITORY" "https://github.com/p-ranav/argparse.git" "EXTERNALPROJECT_INTERNAL_ARGUMENT_SEPARATOR"
-                    SOURCE_DIR          "/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/argparse-src"
-                    BINARY_DIR          "/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/argparse-build"
+                    SOURCE_DIR          "/home/ignacy/Projects/uni/sem4/minesweeper/cmake-build-debug/_deps/argparse-src"
+                    BINARY_DIR          "/home/ignacy/Projects/uni/sem4/minesweeper/cmake-build-debug/_deps/argparse-build"
                     CONFIGURE_COMMAND   ""
                     BUILD_COMMAND       ""
                     INSTALL_COMMAND     ""

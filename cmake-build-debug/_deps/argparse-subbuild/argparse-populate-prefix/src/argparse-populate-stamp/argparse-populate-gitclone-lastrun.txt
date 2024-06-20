@@ -3,9 +3,9 @@
 # No other meaning or use of this file is supported.
 
 method=git
-command=/usr/bin/cmake;-P;/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/argparse-subbuild/argparse-populate-prefix/tmp/argparse-populate-gitclone.cmake
-source_dir=/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/argparse-src
-work_dir=/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps
+command=/usr/bin/cmake;-P;/home/ignacy/Projects/uni/sem4/minesweeper/cmake-build-debug/_deps/argparse-subbuild/argparse-populate-prefix/tmp/argparse-populate-gitclone.cmake
+source_dir=/home/ignacy/Projects/uni/sem4/minesweeper/cmake-build-debug/_deps/argparse-src
+work_dir=/home/ignacy/Projects/uni/sem4/minesweeper/cmake-build-debug/_deps
 repository=https://github.com/p-ranav/argparse.git
 remote=origin
 init_submodules=TRUE

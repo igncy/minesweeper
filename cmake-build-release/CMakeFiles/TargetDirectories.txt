@@ -1,0 +1,9 @@
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-release/CMakeFiles/minesweeper.dir
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-release/CMakeFiles/package.dir
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-release/CMakeFiles/package_source.dir
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-release/CMakeFiles/edit_cache.dir
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-release/CMakeFiles/rebuild_cache.dir
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-release/_deps/argparse-build/CMakeFiles/package.dir
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-release/_deps/argparse-build/CMakeFiles/package_source.dir
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-release/_deps/argparse-build/CMakeFiles/edit_cache.dir
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-release/_deps/argparse-build/CMakeFiles/rebuild_cache.dir

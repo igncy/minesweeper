@@ -1,0 +1,14 @@
+# Target labels
+ ftxui-populate
+# Source files and their labels
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/ftxui-subbuild/CMakeFiles/ftxui-populate
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/ftxui-subbuild/CMakeFiles/ftxui-populate.rule
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/ftxui-subbuild/CMakeFiles/ftxui-populate-complete.rule
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/ftxui-subbuild/ftxui-populate-prefix/src/ftxui-populate-stamp/ftxui-populate-build.rule
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/ftxui-subbuild/ftxui-populate-prefix/src/ftxui-populate-stamp/ftxui-populate-configure.rule
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/ftxui-subbuild/ftxui-populate-prefix/src/ftxui-populate-stamp/ftxui-populate-download.rule
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/ftxui-subbuild/ftxui-populate-prefix/src/ftxui-populate-stamp/ftxui-populate-install.rule
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/ftxui-subbuild/ftxui-populate-prefix/src/ftxui-populate-stamp/ftxui-populate-mkdir.rule
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/ftxui-subbuild/ftxui-populate-prefix/src/ftxui-populate-stamp/ftxui-populate-patch.rule
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/ftxui-subbuild/ftxui-populate-prefix/src/ftxui-populate-stamp/ftxui-populate-test.rule
+/home/ignacy/Projects/uni/sem4/cpp/project/cmake-build-debug/_deps/ftxui-subbuild/ftxui-populate-prefix/src/ftxui-populate-stamp/ftxui-populate-update.rule

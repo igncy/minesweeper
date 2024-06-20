@@ -1,4 +1,0 @@
-cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_MAKE_PROGRAM=/opt/clion/bin/ninja/linux/x64/ninja -G Ninja -S /home/ignacy/Projects/uni/sem4/minesweeper -B /home/ignacy/Projects/uni/sem4/minesweeper/cmake-build-release
--- Configuring done (5.9s)
--- Generating done (0.0s)
--- Build files have been written to: /home/ignacy/Projects/uni/sem4/minesweeper/cmake-build-release

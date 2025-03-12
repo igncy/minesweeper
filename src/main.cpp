@@ -96,12 +96,7 @@ int main(int argc, char *argv[]) {
     if (game_win_h > LINES || game_win_v > COLS) {
         close_cli();
         std::cerr << "Error: board too big" << std::endl;
-        return 0;
-    }
-    if (grid_rows*grid_cols < mines) {
-        close_cli();
-        std::cerr << "Error: board too small or too many mines" << std::endl;
-        return 0;
+        return 1;
     }
 
     WINDOW *game_win = newwin(game_win_h, game_win_v, LINES/2-game_win_h/2, COLS/2-game_win_v/2);
@@ -111,9 +106,16 @@ int main(int argc, char *argv[]) {
     wattroff(game_win, COLOR_PAIR(C_BLUE));
 
     Board board(grid_rows, grid_cols);
-    board.init(mines);
+    try {
+        board.init(mines);
+    }
+    catch (const std::exception &err) {
+        close_cli();
+        std::cerr << err.what() << std::endl;
+        return 1;
+    }
 
-    Pos cursor = {0, 0};
+    Cursor cursor = {0, 0};
 
     Timer timer;
     std::mutex mutex;
@@ -193,9 +195,9 @@ int main(int argc, char *argv[]) {
             wrefresh(win);
             wrefresh(game_win);
 
-            ch = wgetch(win);
-            while (ch != ' ' && ch != 'q' && ch != 'Q')
+            do {
                 ch = wgetch(win);
+            } while (ch != ' ' && ch != 'q' && ch != 'Q');
             break;
         }
 	}

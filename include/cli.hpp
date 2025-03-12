@@ -5,7 +5,7 @@ void init_cli();
 
 void close_cli();
 
-struct Pos {
+struct Cursor {
     int x, y;
 };
 

@@ -49,6 +49,8 @@ public:
     void reveal_all();
 
     [[nodiscard]] bool checkIfWon() const;
+
+    ~Board();
 };
 
 #endif //MINESWEEPER_BOARD_H

@@ -24,6 +24,7 @@ void draw_timer(const Timer &timer, std::atomic<bool> &running, std::mutex &mute
 
         wrefresh(win);
         mutex.unlock();
+
         std::this_thread::sleep_for(std::chrono::seconds(1));
     }
 }

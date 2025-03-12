@@ -1,3 +1,6 @@
+#include <iostream>
+#include <algorithm>
+
 #include "../include/board.h"
 #include "../include/rng.h"
 #include "../include/cli.hpp"
@@ -70,15 +73,18 @@ int Board::clickCell(int row, int col) {
 }
 
 void Board::init(int mines) {
+    if (rows_*cols_ < mines) {
+        throw std::invalid_argument("Error: board too small or too many mines");
+    }
+
     RNG rng = RNG();
 
     for (int i=0; i<mines; i++) {
-        int row = rng.generate(0, rows_-1),
-            col = rng.generate(0, cols_-1);
-        while (grid_[row][col].mine_state == -1) {
+        int row, col;
+        do {
             row = rng.generate(0, rows_-1);
             col = rng.generate(0, cols_-1);
-        }
+        } while (grid_[row][col].mine_state == -1);
 
         grid_[row][col].mine_state = -1;
         updateAdjacentCells(row, col);
@@ -116,22 +122,23 @@ void Board::draw(WINDOW *win) const {
 }
 
 void Board::reveal_all() {
-    for (int row=0; row<rows_; row++) {
-        for (int col=0; col<cols_; col++) {
-            grid_[row][col].state = OPENED;
-            grid_[row][col].highlighted = false;
+    for (auto &row: grid_) {
+        for (auto &cell: row) {
+            cell.state = OPENED;
+            cell.highlighted = false;
         }
     }
 }
 
 bool Board::checkIfWon() const {
-    for (int row=0; row<rows_; row++) {
-        for (int col=0; col<cols_; col++) {
-            Cell cell = grid_[row][col];
-            if (cell.mine_state != -1 && cell.state != OPENED) {
-                return false;
-            }
-        }
+    for (auto &row_iter: grid_) {
+        if (std::any_of(row_iter.begin(), row_iter.end(), [](Cell cell) {
+                return cell.mine_state != -1 && cell.state != OPENED;}))
+            return false;
     }
     return true;
+}
+
+Board::~Board() {
+    std::cout << "destructor" << std::endl;
 }

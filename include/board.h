@@ -12,7 +12,7 @@ enum CellState {
 
 struct Cell {
     CellState state = UNOPENED;
-    // -1 - mine, 0-6 - number of adjacent mines
+    // -1 - mine, 0-8 - number of adjacent mines
     int mine_state = 0;
     bool highlighted = false;
 };

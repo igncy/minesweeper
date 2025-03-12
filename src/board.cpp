@@ -50,11 +50,9 @@ int Board::flagCell(int row, int col) {
         grid_[row][col].state = UNOPENED;
         return 1;
     }
-    // UNOPENED
-    else {
-        grid_[row][col].state = FLAGGED;
-        return -1;
-    }
+    // else UNOPENED
+    grid_[row][col].state = FLAGGED;
+    return -1;
 }
 
 void Board::highlightCell(int row, int col) {
@@ -75,9 +73,8 @@ void Board::init(int mines) {
     RNG rng = RNG();
 
     for (int i=0; i<mines; i++) {
-        int row, col;
-        row = rng.generate(0, rows_-1);
-        col = rng.generate(0, cols_-1);
+        int row = rng.generate(0, rows_-1),
+            col = rng.generate(0, cols_-1);
         while (grid_[row][col].mine_state == -1) {
             row = rng.generate(0, rows_-1);
             col = rng.generate(0, cols_-1);

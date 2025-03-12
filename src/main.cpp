@@ -23,6 +23,12 @@ void at_exit() {
 int main(int argc, char *argv[]) {
     argparse::ArgumentParser program("minesweeper");
     program.set_usage_max_line_width(80);
+    program.add_description("Play minesweeper");
+    program.add_epilog("Controls:\n"
+        "  Arrow keys / WASD   move the cursor\n"
+        "  Space               reveal a cell\n"
+        "  F                   flag a cell\n"
+        "  Q                   quit");
     program.add_argument("-r", "--rows")
         .help("board height")
         .default_value(9)
@@ -30,23 +36,25 @@ int main(int argc, char *argv[]) {
         .nargs(1)
         .scan<'i', int>();
     program.add_argument("-c", "--cols")
-        .help("board width")
+        .help("set board width")
         .default_value(9)
         .metavar("COLS")
         .nargs(1)
         .scan<'i', int>();
     program.add_argument("-m", "--mines")
-        .help("mine count")
+        .help("set mine count")
         .default_value(10)
         .metavar("MINES")
         .nargs(1)
         .scan<'i', int>();
     program.add_argument("-d", "--difficulty")
-        .help("difficulty level (1-3) [default: 1]")
+        .help("set difficulty level (1-3), overrides other options")
+        .default_value(1)
         .choices(1, 2, 3)
         .metavar("D")
         .nargs(1)
         .scan<'i', int>();
+
     try {
         program.parse_args(argc, argv);
     }
@@ -87,12 +95,12 @@ int main(int argc, char *argv[]) {
         game_win_v = grid_cols*3+2;
     if (game_win_h > LINES || game_win_v > COLS) {
         close_cli();
-        std::cout << "board too big" << std::endl;
+        std::cerr << "Error: board too big" << std::endl;
         return 0;
     }
     if (grid_rows*grid_cols < mines) {
         close_cli();
-        std::cout << "board too small or too many mines" << std::endl;
+        std::cerr << "Error: board too small or too many mines" << std::endl;
         return 0;
     }
 
@@ -131,30 +139,26 @@ int main(int argc, char *argv[]) {
 
         int ch = wgetch(win);
 		switch (ch) {
-            case KEY_UP:
-            case 'w':
+            case KEY_UP: case 'w': case 'W':
                 cursor.x > 0 ? cursor.x-- : cursor.x = board.rows()-1;
 				break;
-			case KEY_DOWN:
-            case 's':
+			case KEY_DOWN: case 's': case 'S':
                 cursor.x < board.rows()-1 ? cursor.x++ : cursor.x = 0;
 				break;
-            case KEY_LEFT:
-            case 'a':
+            case KEY_LEFT: case 'a': case 'A':
                 cursor.y > 0 ? cursor.y-- : cursor.y = board.cols()-1;
                 break;
-            case KEY_RIGHT:
-            case 'd':
+            case KEY_RIGHT: case 'd': case 'D':
                 cursor.y < board.cols()-1 ? cursor.y++ : cursor.y = 0;
                 break;
-            case 'f':
+            case 'f': case 'F':
                 mines += board.flagCell(cursor.x, cursor.y);
                 break;
             case ' ': {
                 game_over = board.clickCell(cursor.x, cursor.y) == -1;
                 break;
             }
-            case 'q':
+            case 'q': case 'Q':
                 running.store(false);
                 break;
             case KEY_RESIZE:
@@ -190,7 +194,7 @@ int main(int argc, char *argv[]) {
             wrefresh(game_win);
 
             ch = wgetch(win);
-            while (ch != ' ' && ch != 'q')
+            while (ch != ' ' && ch != 'q' && ch != 'Q')
                 ch = wgetch(win);
             break;
         }

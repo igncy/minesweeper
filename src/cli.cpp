@@ -13,6 +13,7 @@ void init_cli() {
     #ifndef NO_COLORS
         start_color();
     #endif
+
     init_pair(C_HIGHLIGHT, COLOR_YELLOW, COLOR_BLUE);
     init_pair(C_BLUE, COLOR_BLUE, COLOR_BLACK);
     init_pair(C_RED, COLOR_RED, COLOR_BLACK);

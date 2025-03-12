@@ -3,11 +3,8 @@
 
 #include <chrono>
 #include <ncurses.h>
-#include <thread>
 #include <mutex>
 #include <atomic>
-
-#include "cli.hpp"
 
 class Timer {
 private:

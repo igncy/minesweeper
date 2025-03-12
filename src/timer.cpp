@@ -1,4 +1,7 @@
+#include <thread>
+
 #include "../include/timer.h"
+#include "../include/cli.hpp"
 
 long Timer::getElapsedTime() const {
         if (!running) return 0;

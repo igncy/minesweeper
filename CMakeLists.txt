@@ -15,11 +15,9 @@ add_executable(minesweeper src/main.cpp
         src/timer.cpp
 )
 
-
 find_package(Curses REQUIRED)
 include_directories(${CURSES_INCLUDE_DIR})
 target_link_libraries(minesweeper ${CURSES_LIBRARIES})
-
 
 include(FetchContent)
 FetchContent_Declare(

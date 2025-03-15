@@ -3,7 +3,6 @@
 
 #include "../include/board.hpp"
 #include "../include/rng.hpp"
-#include "../include/cli.hpp"
 
 Board::Board(int rows, int cols, int mines):
         rows_(rows),
@@ -105,36 +104,6 @@ void Board::init() {
 void Board::init(int mines) {
     mines_ = mines;
     init();
-}
-
-void Board::draw(WINDOW *win) const {
-    for (int row=0; row<rows_; row++) {
-        for (int col=0; col<cols_; col++) {
-            Cell cell = grid_[row][col];
-            int ch;
-
-            switch (cell.state) {
-                case UNOPENED:
-                    ch = ' ';
-                    break;
-                case OPENED:
-                    ch = cell.mine_state == -1 ? 'X' : cell.mine_state + '0';
-                    if (cell.mine_state == -1) wattron(win, COLOR_PAIR(C_RED));
-                    break;
-                case FLAGGED:
-                    ch = 'F';
-                    wattron(win, COLOR_PAIR(C_GREEN));
-                    break;
-            }
-
-            #ifdef NO_COLORS
-                if (cell.highlighted) wattron(win, A_REVERSE);
-            #endif
-            if (cell.highlighted) wattron(win, A_BOLD | COLOR_PAIR(C_HIGHLIGHT));
-            mvwprintw(win, 1+row, 1+col*3, " %c ", ch);
-            wattroff(win, A_REVERSE | A_BOLD | COLOR_PAIR(C_HIGHLIGHT) | COLOR_PAIR(C_RED) | COLOR_PAIR(C_GREEN));
-        }
-    }
 }
 
 void Board::reveal_all() {

@@ -6,8 +6,8 @@ set(CMAKE_CXX_STANDARD 17)
 #add_compile_definitions(NO_COLORS)
 
 add_executable(minesweeper src/main.cpp
-        include/cli.hpp
-        src/cli.cpp
+        include/ui.hpp
+        src/ui.cpp
         include/board.hpp
         src/board.cpp
         include/rng.hpp

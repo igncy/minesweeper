@@ -1,4 +1,3 @@
-#include <ncurses.h>
 #include <csignal>
 #include <iostream>
 #include <argparse/argparse.hpp>
@@ -6,7 +5,7 @@
 #include <mutex>
 #include <atomic>
 
-#include "../include/cli.hpp"
+#include "../include/ui.hpp"
 #include "../include/board.hpp"
 #include "../include/timer.hpp"
 
@@ -14,10 +13,6 @@ std::atomic<bool> running(true);
 
 void sigint_handler([[maybe_unused]] int sig) {
     running.store(false);
-}
-
-void at_exit() {
-    close_cli();
 }
 
 int main(int argc, char *argv[]) {
@@ -60,7 +55,7 @@ int main(int argc, char *argv[]) {
     }
     catch (const std::exception &err) {
         std::cerr << err.what() << std::endl << program;
-        return 1;
+        return EXIT_FAILURE;
     }
 
     int grid_rows = program.get<int>("--rows");
@@ -84,62 +79,45 @@ int main(int argc, char *argv[]) {
         }
     }
 
-    signal(SIGINT, sigint_handler);
-    std::atexit(at_exit);
-    init_cli();
-
-    WINDOW *win = newwin(0, 0, 0, 0);
-	keypad(win, TRUE);
-
     int game_win_h = grid_rows+2,
         game_win_v = grid_cols*3+2;
+    auto ui = TUI(game_win_h, game_win_v);
     if (game_win_h > LINES || game_win_v > COLS) {
-        close_cli();
         std::cerr << "Error: board too big" << std::endl;
-        return 1;
+        return EXIT_FAILURE;
     }
-
-    WINDOW *game_win = newwin(game_win_h, game_win_v, LINES/2-game_win_h/2, COLS/2-game_win_v/2);
-	keypad(game_win, TRUE);
-    wattron(game_win, COLOR_PAIR(C_BLUE));
-    box(game_win, 0, 0);
-    wattroff(game_win, COLOR_PAIR(C_BLUE));
 
     Board board(grid_rows, grid_cols, mines);
     try {
         board.init();
     }
     catch (const std::exception &err) {
-        close_cli();
+        ui.close();
         std::cerr << err.what() << std::endl;
-        return 1;
+        return EXIT_FAILURE;
     }
+
+    signal(SIGINT, sigint_handler);
 
     Cursor cursor = {0, 0};
 
     Timer timer;
     std::mutex mutex;
-    std::thread timer_thread(draw_timer, std::ref(timer), std::ref(running), std::ref(mutex), win, game_win_h, game_win_v);
+    std::thread timer_thread(draw_timer, std::ref(timer), std::ref(running), std::ref(mutex), ui.get_win(), game_win_h, game_win_v);
     timer.start();
 
     bool game_over = false;
 	while (running.load()) {
         board.highlightCell(cursor.x, cursor.y);
         mutex.lock();
-        board.draw(game_win);
-
-        wattron(win, COLOR_PAIR(C_YELLOW));
-        mvwprintw(win, LINES/2-game_win_h/2-1, COLS/2-game_win_v/2, "   ");
-        mvwprintw(win, LINES/2-game_win_h/2-1, COLS/2-game_win_v/2, "%d", mines);
-        wattroff(win, COLOR_PAIR(C_YELLOW));
-
-        wrefresh(win);
-        wrefresh(game_win);
+	    ui.drawBoard(board);
+	    ui.drawMineCount(board);
+	    ui.refresh();
         mutex.unlock();
 
         board.highlightCell(cursor.x, cursor.y);
 
-        int ch = wgetch(win);
+        int ch = wgetch(ui.get_win());
 		switch (ch) {
             case KEY_UP: case 'w': case 'W':
                 cursor.x > 0 ? cursor.x-- : cursor.x = board.rows()-1;
@@ -164,13 +142,7 @@ int main(int argc, char *argv[]) {
                 running.store(false);
                 break;
             case KEY_RESIZE:
-                wclear(stdscr);
-                wclear(win);
-                wclear(game_win);
-                mvwin(game_win, LINES/2-game_win_h/2, COLS/2-game_win_v/2);
-                wattron(game_win, COLOR_PAIR(C_BLUE));
-                box(game_win, 0, 0);
-                wattroff(game_win, COLOR_PAIR(C_BLUE));
+		        ui.on_resize();
             default:
                 break;
 		}
@@ -179,30 +151,18 @@ int main(int argc, char *argv[]) {
             timer.stop();
             running.store(false);
             board.reveal_all();
-            board.draw(game_win);
-
-            wmove(win, LINES/2+game_win_h/2+1, COLS/2-game_win_v/2);
-            wclrtoeol(win);
-            if (game_over) wattron(win, A_BOLD | COLOR_PAIR(C_RED));
-            else wattron(win, A_BOLD | COLOR_PAIR(C_GREEN));
-            mvwprintw(win, LINES/2+game_win_h/2+1, COLS/2-game_win_v/2, "you %s", game_over ? "lost" : "won");
-            wattroff(win, A_BOLD | COLOR_PAIR(C_RED) | COLOR_PAIR(C_GREEN));
-
-            wattron(game_win, COLOR_PAIR(game_over ? C_RED : C_GREEN));
-            box(game_win, 0, 0);
-            wattroff(game_win, COLOR_PAIR(game_over ? C_RED : C_GREEN));
-
-            wrefresh(win);
-            wrefresh(game_win);
+            ui.drawBoard(board);
+            ui.drawEndScreen(game_over);
+            ui.refresh();
 
             do {
-                ch = wgetch(win);
+                ch = wgetch(ui.get_win());
             } while (ch != ' ' && ch != 'q' && ch != 'Q');
             break;
         }
 	}
 
     timer_thread.join();
-    close_cli();
-	return 0;
+    ui.close();
+	return EXIT_SUCCESS;
 }

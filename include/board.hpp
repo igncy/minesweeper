@@ -2,7 +2,6 @@
 #define MINESWEEPER_BOARD_H
 
 #include <vector>
-#include <ncurses.h>
 
 enum CellState {
     UNOPENED,
@@ -51,8 +50,6 @@ public:
     void init();
     void init(int mines);
 
-    void draw(WINDOW *win) const;
-
     void reveal_all();
 
     [[nodiscard]] bool checkIfWon() const;
@@ -62,6 +59,9 @@ public:
     bool operator==(Board const &other) const;
 
     bool operator!=(Board const &other) const;
+
+    friend class TUI;
+    friend class CLI;
 };
 
 #endif //MINESWEEPER_BOARD_H

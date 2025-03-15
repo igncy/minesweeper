@@ -3,11 +3,12 @@
 
 #include <random>
 
+template <typename numType, class dist>
 class RNG {
 private:
     std::mt19937 gen;
-    int min_, max_;
-    std::uniform_int_distribution<> dis;
+    numType min_, max_;
+    dist dis;
 
 public:
     RNG():
@@ -17,17 +18,23 @@ public:
         set_range(min_, max_);
     }
 
-    void set_range(int min, int max) {
-        dis = std::uniform_int_distribution<>(min, max);
+    void set_range(numType min, numType max) {
+        dis = dist(min, max);
     }
 
-    int generate() {
+    numType generate() {
         return dis(gen);
     }
-    int generate(int min, int max) {
+    numType generate(numType min, numType max) {
         set_range(min, max);
         return dis(gen);
     }
+};
+
+class RNG_int: public RNG<int, std::uniform_int_distribution<>> {
+};
+
+class RNG_real: public RNG<double, std::uniform_real_distribution<>> {
 };
 
 #endif //MINESWEEPER_RNG_H

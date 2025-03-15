@@ -77,7 +77,7 @@ void Board::init(int mines) {
         throw std::invalid_argument("Error: board too small or too many mines");
     }
 
-    RNG rng = RNG();
+    auto rng = RNG_int();
 
     for (int i=0; i<mines; i++) {
         int row, col;

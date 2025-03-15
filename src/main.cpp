@@ -7,8 +7,8 @@
 #include <atomic>
 
 #include "../include/cli.hpp"
-#include "../include/board.h"
-#include "../include/timer.h"
+#include "../include/board.hpp"
+#include "../include/timer.hpp"
 
 std::atomic<bool> running(true);
 
@@ -105,9 +105,9 @@ int main(int argc, char *argv[]) {
     box(game_win, 0, 0);
     wattroff(game_win, COLOR_PAIR(C_BLUE));
 
-    Board board(grid_rows, grid_cols);
+    Board board(grid_rows, grid_cols, mines);
     try {
-        board.init(mines);
+        board.init();
     }
     catch (const std::exception &err) {
         close_cli();

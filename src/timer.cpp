@@ -1,6 +1,6 @@
 #include <thread>
 
-#include "../include/timer.h"
+#include "../include/timer.hpp"
 #include "../include/cli.hpp"
 
 long Timer::getElapsedTime() const {

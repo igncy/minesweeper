@@ -8,10 +8,10 @@ set(CMAKE_CXX_STANDARD 17)
 add_executable(minesweeper src/main.cpp
         include/cli.hpp
         src/cli.cpp
-        include/board.h
+        include/board.hpp
         src/board.cpp
-        include/rng.h
-        include/timer.h
+        include/rng.hpp
+        include/timer.hpp
         src/timer.cpp
 )
 

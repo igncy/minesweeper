@@ -1,14 +1,22 @@
 #include <iostream>
 #include <algorithm>
 
-#include "../include/board.h"
-#include "../include/rng.h"
+#include "../include/board.hpp"
+#include "../include/rng.hpp"
 #include "../include/cli.hpp"
 
-Board::Board(int rows, int cols):
+Board::Board(int rows, int cols, int mines):
         rows_(rows),
         cols_(cols),
+        mines_(mines),
         grid_(rows, std::vector<Cell>(cols)) {
+}
+
+Board::Board(Board const &other):
+        rows_(other.rows_),
+        cols_(other.cols_),
+        mines_(other.mines_) {
+    grid_ = std::vector<std::vector<Cell>>(rows_, std::vector<Cell>(cols_));
 }
 
 void Board::updateAdjacentCells(int row, int col) {
@@ -45,6 +53,11 @@ void Board::openAdjacentCells(int row, int col) {
     }
 }
 
+void Board::validateParams() const {
+    if (rows_*cols_ < mines_)
+        throw std::invalid_argument("Error: board too small or too many mines");
+}
+
 int Board::flagCell(int row, int col) {
     if (grid_[row][col].state == OPENED) {
         return 0;
@@ -72,14 +85,12 @@ int Board::clickCell(int row, int col) {
     return cell->mine_state;
 }
 
-void Board::init(int mines) {
-    if (rows_*cols_ < mines) {
-        throw std::invalid_argument("Error: board too small or too many mines");
-    }
+void Board::init() {
+    validateParams();
 
     auto rng = RNG_int();
 
-    for (int i=0; i<mines; i++) {
+    for (int i=0; i<mines_; i++) {
         int row, col;
         do {
             row = rng.generate(0, rows_-1);
@@ -89,6 +100,11 @@ void Board::init(int mines) {
         grid_[row][col].mine_state = -1;
         updateAdjacentCells(row, col);
     }
+}
+
+void Board::init(int mines) {
+    mines_ = mines;
+    init();
 }
 
 void Board::draw(WINDOW *win) const {
@@ -133,12 +149,23 @@ void Board::reveal_all() {
 bool Board::checkIfWon() const {
     for (auto &row_iter: grid_) {
         if (std::any_of(row_iter.begin(), row_iter.end(), [](Cell cell) {
-                return cell.mine_state != -1 && cell.state != OPENED;}))
+                return cell.mine_state != -1 && cell.state != OPENED;
+            }))
             return false;
     }
     return true;
 }
 
 Board::~Board() {
-    std::cout << "destructor" << std::endl;
+    std::cout << "Thanks for playing" << std::endl;
+}
+
+bool Board::operator==(Board const &other) const {
+    return rows_ == other.rows_
+        && cols_ == other.cols_
+        && mines_ == other.mines_;
+}
+
+bool Board::operator!=(Board const &other) const {
+    return !(*this == other);
 }

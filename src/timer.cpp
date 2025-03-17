@@ -10,7 +10,7 @@ long Timer::getElapsedTime() const {
         return duration.count();
     }
 
-void draw_timer(const Timer &timer, std::atomic<bool> &running, std::mutex &mutex, WINDOW *win, int game_win_h, int game_win_v) {
+void drawTimer(const Timer &timer, const std::atomic<bool> &running, std::mutex &mutex, WINDOW *win, int game_win_h, int game_win_v) {
     while (running.load()) {
         mutex.lock();
 
@@ -18,8 +18,7 @@ void draw_timer(const Timer &timer, std::atomic<bool> &running, std::mutex &mute
         wclrtoeol(win);
         wattron(win, COLOR_PAIR(C_YELLOW));
         long elapsed = timer.getElapsedTime();
-        mvwprintw(win, LINES/2-game_win_h/2-1, COLS/2+game_win_v/2-4, "%02ld:%02ld",
-                  elapsed/60, elapsed%60);
+        mvwprintw(win, LINES/2-game_win_h/2-1, COLS/2+game_win_v/2-4, "%02ld:%02ld", elapsed/60, elapsed%60);
         wattroff(win, COLOR_PAIR(C_YELLOW));
 
         wrefresh(win);

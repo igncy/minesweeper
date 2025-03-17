@@ -26,6 +26,6 @@ public:
     [[nodiscard]] long getElapsedTime() const;
 };
 
-void draw_timer(const Timer &timer, std::atomic<bool> &running, std::mutex &mutex, WINDOW *win, int game_win_h, int game_win_v);
+void drawTimer(const Timer &timer, const std::atomic<bool> &running, std::mutex &mutex, WINDOW *win, int game_win_h, int game_win_v);
 
 #endif //MINESWEEPER_TIMER_H

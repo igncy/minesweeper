@@ -9,7 +9,7 @@ BUILD_DIR=build
 SRC_DIR=src
 INCLUDES=-Iinclude -Icmake-build-release/_deps/argparse-src/include
 LIBS=-lncurses
-MACROS=-DNO_COLORS
+MACROS=#-DNO_COLORS
 TGT=minesweeper
 
 .PHONY: all run clean

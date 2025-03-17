@@ -20,12 +20,19 @@ enum ColorPairs {
 };
 
 class UI {
+private:
+    virtual void drawBoard(const Board &board) const = 0;
+
 public:
     virtual void init() = 0;
 
     virtual void close() = 0;
 
-    virtual void drawBoard(const Board &board) = 0;
+    virtual void draw(const Board &board) const = 0;
+
+    virtual void drawEndScreen(bool game_lost) const = 0;
+
+    virtual int getKey() = 0;
 
     virtual ~UI() = default;
 };
@@ -34,6 +41,10 @@ class TUI final: public UI {
 private:
     int game_win_h, game_win_v;
     WINDOW *win, *game_win;
+
+    void drawBoard(const Board &board) const override;
+
+    void drawMineCount(const Board &board) const;
 
 public:
     TUI(int game_win_h, int game_win_v);
@@ -51,23 +62,35 @@ public:
 
     void on_resize() const;
 
-    void drawBoard(const Board &board) override;
+    void draw(const Board &board) const override;
 
-    void drawMineCount(const Board &board) const;
-
-    void drawEndScreen(bool game_lost) const;
+    void drawEndScreen(bool game_lost) const override;
 
     void refresh() const;
+
+    int getKey() override;
 
     ~TUI() override;
 };
 
 class CLI final: public UI {
+private:
+    void drawBoard(const Board &board) const override;
+
+public:
     void init() override;
 
     void close() override;
 
-    void drawBoard(const Board &board) override;
+    void on_resize() const;
+
+    void draw(const Board &board) const override;
+
+    void drawEndScreen(bool game_lost) const override;
+
+    void refresh() const;
+
+    int getKey() override;
 };
 
 #endif //MINESWEEPER_CLI_HPP

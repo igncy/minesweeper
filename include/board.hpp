@@ -54,11 +54,13 @@ public:
 
     [[nodiscard]] bool checkIfWon() const;
 
-    ~Board();
-
     bool operator==(Board const &other) const;
 
     bool operator!=(Board const &other) const;
+
+    void updateMineCount(int n);
+
+    void setMineCount(int n);
 
     friend class TUI;
     friend class CLI;

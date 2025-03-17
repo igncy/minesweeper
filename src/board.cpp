@@ -1,5 +1,5 @@
-#include <iostream>
 #include <algorithm>
+#include <stdexcept>
 
 #include "../include/board.hpp"
 #include "../include/rng.hpp"
@@ -125,10 +125,6 @@ bool Board::checkIfWon() const {
     return true;
 }
 
-Board::~Board() {
-    std::cout << "Thanks for playing" << std::endl;
-}
-
 bool Board::operator==(Board const &other) const {
     return rows_ == other.rows_
         && cols_ == other.cols_
@@ -137,4 +133,12 @@ bool Board::operator==(Board const &other) const {
 
 bool Board::operator!=(Board const &other) const {
     return !(*this == other);
+}
+
+void Board::updateMineCount(int n) {
+    mines_ += n;
+}
+
+void Board::setMineCount(int n) {
+    mines_ = n;
 }

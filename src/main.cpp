@@ -79,16 +79,17 @@ int main(int argc, char *argv[]) {
         }
     }
 
+    signal(SIGINT, sigint_handler);
+
     int game_win_h = grid_rows+2,
         game_win_v = grid_cols*3+2;
     auto ui = TUI(game_win_h, game_win_v);
-    if (game_win_h > LINES || game_win_v > COLS) {
-        std::cerr << "Error: board too big" << std::endl;
-        return EXIT_FAILURE;
-    }
+    // auto ui = CLI();
 
     Board board(grid_rows, grid_cols, mines);
+
     try {
+        ui.init();
         board.init();
     }
     catch (const std::exception &err) {
@@ -97,27 +98,23 @@ int main(int argc, char *argv[]) {
         return EXIT_FAILURE;
     }
 
-    signal(SIGINT, sigint_handler);
-
     Cursor cursor = {0, 0};
 
     Timer timer;
     std::mutex mutex;
-    std::thread timer_thread(draw_timer, std::ref(timer), std::ref(running), std::ref(mutex), ui.get_win(), game_win_h, game_win_v);
+    std::thread timer_thread(drawTimer, std::ref(timer), std::ref(running), std::ref(mutex), ui.get_win(), game_win_h, game_win_v);
     timer.start();
 
     bool game_over = false;
 	while (running.load()) {
         board.highlightCell(cursor.x, cursor.y);
         mutex.lock();
-	    ui.drawBoard(board);
-	    ui.drawMineCount(board);
+	    ui.draw(board);
 	    ui.refresh();
         mutex.unlock();
-
         board.highlightCell(cursor.x, cursor.y);
 
-        int ch = wgetch(ui.get_win());
+	    int ch = ui.getKey();
 		switch (ch) {
             case KEY_UP: case 'w': case 'W':
                 cursor.x > 0 ? cursor.x-- : cursor.x = board.rows()-1;
@@ -132,7 +129,7 @@ int main(int argc, char *argv[]) {
                 cursor.y < board.cols()-1 ? cursor.y++ : cursor.y = 0;
                 break;
             case 'f': case 'F':
-                mines += board.flagCell(cursor.x, cursor.y);
+		        board.updateMineCount(board.flagCell(cursor.x, cursor.y));
                 break;
             case ' ': {
                 game_over = board.clickCell(cursor.x, cursor.y) == -1;
@@ -151,12 +148,13 @@ int main(int argc, char *argv[]) {
             timer.stop();
             running.store(false);
             board.reveal_all();
-            ui.drawBoard(board);
+            board.setMineCount(0);
+            ui.draw(board);
             ui.drawEndScreen(game_over);
             ui.refresh();
 
             do {
-                ch = wgetch(ui.get_win());
+                ch = ui.getKey();
             } while (ch != ' ' && ch != 'q' && ch != 'Q');
             break;
         }

@@ -37,15 +37,15 @@ void Board::openAdjacentCells(int row, int col) {
         for (int j=-1; j<=1; j++) {
             int r = row + i,
                 c = col + j;
-            Cell *cell = &grid_[r][c];
 
-            if (0 <= r && r < rows_
-                    && 0 <= c && c < cols_
-                    && cell->state == UNOPENED
-                    && cell->mine_state != -1) {
-                cell->state = OPENED;
-                if (cell->mine_state == 0) {
-                    openAdjacentCells(r, c);
+            if (!(i==0 && j==0)
+                    && 0 <= r && r < rows_
+                    && 0 <= c && c < cols_) {
+                Cell &cell = grid_[r][c];
+
+                if (cell.state == UNOPENED && cell.mine_state != -1) {
+                    cell.state = OPENED;
+                    if (cell.mine_state == 0) openAdjacentCells(r, c);
                 }
             }
         }
